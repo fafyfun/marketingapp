@@ -50,6 +50,7 @@
                                 <td><?php echo $account->consumer_key ?></td>
                                 <td><?php echo ($account->status == 1)? 'Enable' : 'Disable' ?></td>
                                 <td class="center">
+
                                     <a href="<?php echo base_url()?>xero/deleteAction/<?php echo $account->id ?>"><i class="fa fa-remove text-danger"></i></a
                                 </td>
                             </tr>

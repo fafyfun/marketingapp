@@ -607,6 +607,7 @@
 
 
 <?php } elseif ($page == "Xero"){ ?>
+
     <script>
 
         var sales_count=1;
@@ -618,14 +619,17 @@
 
         function addMore(){
 
-            if(sales_count<sales_limit ){
-                $( "#sales" ).clone(true).appendTo( "#sales_list" );
-                sales_count++;
+            sales_id =  $( "#sales_id" ).val();
 
-            }else{
-                alert("Only 10 Accounts can be added");
+            if(sales_id!=0){
+                if(sales_count<sales_limit ){
+                    $( "#sales" ).clone(true).appendTo( "#sales_list" );
+                    sales_count++;
+
+                }else{
+                    alert("Only 10 Accounts can be added");
+                }
             }
-
 
         }
 
@@ -638,13 +642,20 @@
 
 
         function addExpensesMore(){
-            if(expense_count<10 ){
-                $( "#expense" ).clone().appendTo( "#expense_list" );
-                expense_count++;
 
-            }else{
-                alert("Only 10 Accounts can be added");
+            expenses_id =  $( "#expenses_id" ).val();
+
+            if(expenses_id!=0){
+                if(expense_count<10 ){
+                    $( "#expense" ).clone().appendTo( "#expense_list" );
+                    expense_count++;
+
+                }else{
+                    alert("Only 10 Accounts can be added");
+                }
             }
+
+
 
 
         }

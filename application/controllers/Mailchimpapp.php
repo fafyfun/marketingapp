@@ -29,7 +29,7 @@ class Mailchimpapp extends CI_Controller
 
         if ($this->form_validation->run() === false) {
 
-            
+            $data['error'] = validation_errors();
 
         }else {
 
@@ -68,7 +68,6 @@ class Mailchimpapp extends CI_Controller
 
         $data['list']= $listAdded;
         $data['page']= 'MailChimp';
-
 
         $this->load->view('header');
         $this->load->view('mailchimp/save',$data);

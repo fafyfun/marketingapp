@@ -39,7 +39,7 @@
 
                                 <div class="col-sm-10">
 
-                                    <select id="profile" class="form-control m-b" name="sales_id[]">
+                                    <select id="sales_id" class="form-control m-b" name="sales_id[]">
                                         <option value="0">Select Code</option>
                                         <?php foreach ($sales as $value) {
 
@@ -77,7 +77,7 @@
 
                             <div class="col-sm-10">
 
-                                <select id="profile" class="form-control m-b" name="expenses_id[]">
+                                <select id="expenses_id" class="form-control m-b" name="expenses_id[]">
                                     <option value="0">Select Code</option>
                                     <?php foreach ($expense as $value) {
 
@@ -153,7 +153,7 @@
                                 <td><?php echo $item->account_name  ?></td>
                                 <td><?php echo $item->type  ?></td>
                                 <td class="center">
-                                    <a href="<?php echo base_url()?>xero/deleteAction/<?php echo $item->page_id ?>"><i class="fa fa-remove text-danger"></i></a>
+                                    <a onclick="deleteAcc('<?php echo base_url()?>xero/deleteAction/<?php echo $item->id ?>','') " ><i class="fa fa-remove text-danger"></i></a>
                                     </td>
                             </tr>
 

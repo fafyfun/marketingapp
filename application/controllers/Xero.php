@@ -225,6 +225,7 @@ class Xero extends CI_Controller
             foreach($sales_id_list as $row => $value){
 
 
+
                 if(!$value==0){
                     $account_id = $value;
                     $account_name = $sales_name_list[$row];
@@ -243,10 +244,6 @@ class Xero extends CI_Controller
 
                     $result =  $this->xero_model->insertCode($insertData);
                 }
-
-
-
-
             }
 
             foreach($expenses_id_list as $row => $value){
@@ -412,6 +409,15 @@ class Xero extends CI_Controller
 
     }
 
+    public function deleteAction($id)
+    {
+        $listAdded =  $this->xero_model->delete($id,$_SESSION['id']);
+
+        $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/xero/set_account_type';
+        header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+        exit;
+
+    }
 
 
 

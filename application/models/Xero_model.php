@@ -88,6 +88,17 @@ class Xero_model extends CI_Model
     }
 
 
+    public function delete($id,$user_id)
+    {
+
+        $this->db->where('id', $id);
+        $this->db->where('user_id', $user_id);
+        $this->db->delete('xero_account_code');
+
+
+    }
+
+
 
 
 }

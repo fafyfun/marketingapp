@@ -15,6 +15,15 @@
 
             </div>
             <div class="ibox-content">
+
+                <?php if (isset($error) && !empty($error) ) : ?>
+                    <div class="col-md-12">
+                        <div class="alert alert-danger" role="alert">
+                            <?php echo $error ?>
+                        </div>
+                    </div>
+                <?php endif; ?>
+
                 <?php
 
                 $attributes = array('class' => 'form-horizontal', 'id' => 'myform');
@@ -53,6 +62,8 @@
 
             </div>
             <div class="ibox-content">
+
+
 
                 <table class="table table-striped table-bordered table-hover dataTables-example" >
                     <thead>
