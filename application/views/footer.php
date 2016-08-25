@@ -12,7 +12,8 @@
         10GB of <strong>250GB</strong> Free.
     </div>
     <div>
-        <strong>Copyright</strong> <a href="www.CoolMarketingPackages.com.au" target="_blank">Cool Marketing Dashboard</a> &copy; 2016-2017
+        <strong>Copyright</strong> <a href="www.CoolMarketingPackages.com.au" target="_blank">Cool Marketing
+            Dashboard</a> &copy; 2016-2017
     </div>
 </div>
 
@@ -21,11 +22,12 @@
 </div>
 </div>
 
-<div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog"  aria-hidden="true">
+<div class="modal inmodal fade" id="myModal6" tabindex="-1" role="dialog" aria-hidden="true">
     <div class="modal-dialog modal-sm">
         <div class="modal-content">
             <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+                <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span
+                        class="sr-only">Close</span></button>
                 <h4 class="modal-title">Are you sure?</h4>
             </div>
             <div class="modal-body">
@@ -59,7 +61,7 @@
 <script src="<?php echo base_url() ?>/assets/js/demo/peity-demo.js"></script>
 
 <!-- Custom and plugin javascript -->
-<script src="<?php echo base_url()?>/assets/js/inspinia.js"></script>
+<script src="<?php echo base_url() ?>/assets/js/inspinia.js"></script>
 <script src="<?php echo base_url() ?>/assets/js/plugins/pace/pace.min.js"></script>
 
 
@@ -93,172 +95,126 @@
     });
 </script>
 
-<?php if ( $page == "Dashboard") {
+<?php if ($page == "Dashboard") {
 
-    if(isset($google['sub']) && $google['sub'] == "Google"){
-        $i =0;
-        foreach ($google['resultData'] as $record){ $i++;
+    if (isset($google['sub']) && $google['sub'] == "Google") {
+        $i = 0;
+        foreach ($google['resultData'] as $record) {
+            $i++;
 
             ?>
 
 
-
             <script>
-                $(document).ready(function() {
+                //Flot Multiple Axes Line Chart
+                $(function () {
+                    var oilprices =<?php echo $record['numUser'] ?>;
+                    var exchangerates = <?php echo $record['numPageViews'] ?>;
 
-                    var lineData = {
-                        labels: <?php echo $record['valueRange'] ?>,
-                        datasets: [
-                            {
-                                label: "Test",
-                                fillColor: "rgba(70,79,136,0.5)",
-                                strokeColor: "rgba(70,79,136,1)",
-                                pointColor: "rgba(70,79,136,1)",
-                                title:"Completed Order",
-                                pointStrokeColor: "#fff",
-                                pointHighlightFill: "#fff",
-                                pointHighlightStroke: "rgba(220,220,220,1)",
-                                data: <?php echo $record['numUser'] ?>
+                    function euroFormatter(v, axis) {
+                        return v.toFixed(axis.tickDecimals) + "€";
+                    }
+
+                    function doPlot(position) {
+                        $.plot($("#flot-line-chart-multi<?php echo $i ?>"), [{
+                            data: oilprices,
+                            label: "Number of users"
+                        }, {
+                            data: exchangerates,
+                            label: "Number of page views"
+                        }], {
+                            xaxes: [{
+                                mode: 'time'
+                            }],
+                            legend: {
+                                position: 'sw'
                             },
-                            {
-                                label: "Example dataset",
-                                fillColor: "rgba(26,179,148,0.5)",
-                                strokeColor: "rgba(26,179,148,0.7)",
-                                pointColor: "rgba(26,179,148,1)",
-                                title:"Completed Order",
-                                pointStrokeColor: "#fff",
-                                pointHighlightFill: "#fff",
-                                pointHighlightStroke: "rgba(26,179,148,1)",
-                                data: <?php echo $record['numPageViews'] ?>
+                            colors: ["##1c84c6", "#1ab394"],
+                            grid: {
+                                color: "#999999",
+                                hoverable: true,
+                                clickable: true,
+                                tickColor: "#D4D4D4",
+                                borderWidth: 0,
+                                hoverable: true //IMPORTANT! this is needed for tooltip to work,
+
+                            },
+                            tooltip: true,
+                            tooltipOpts: {
+                                content: "%s for %x was %y",
+                                xDateFormat: "%y-%0m-%0d",
+
+                                onHover: function (flotItem, $tooltipEl) {
+                                    // console.log(flotItem, $tooltipEl);
+                                }
                             }
-                        ]
-                    };
 
-                    var lineOptions = {
-                        scaleShowGridLines: true,
-                        showLegend: true,
-                        scaleGridLineColor: "rgba(0,0,0,.05)",
-                        scaleGridLineWidth: 1,
-                        bezierCurve: true,
-                        bezierCurveTension: 0.4,
-                        pointDot: true,
-                        pointDotRadius: 4,
-                        pointDotStrokeWidth: 1,
-                        pointHitDetectionRadius: 20,
-                        datasetStroke: true,
-                        datasetStrokeWidth: 2,
-                        datasetFill: true,
-                        responsive: true,
-                    };
+                        });
+                    }
 
+                    doPlot("right");
 
-                    var ctx = document.getElementById("lineChart<?php echo $i ?>").getContext("2d");
-                    var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
-
+                    $("button").click(function () {
+                        doPlot($(this).text());
+                    });
                 });
+
             </script>
+
 
             <script>
-                $(document).ready(function() {
+                $(document).ready(function () {
 
+                    //Flot Pie Chart
+                    $(function () {
 
-                    var doughnutData = [
-                        {
-                            value: <?php echo $record['visitor'][0][1] ?>,
-                            color: "#a3e1d4",
-                            highlight: "#1ab394",
-                            label: "Returning"
-                        },
-                        {
-                            value: <?php echo $record['visitor'][1][1] ?>,
-                            color: "#dedede",
-                            highlight: "#1ab394",
-                            label: "New"
-                        },
+                        var data = [{
+                            label: "Returning",
+                            data: <?php echo $record['visitor'][0][1] ?>,
+                            color: "#d3d3d3",
+                        }, {
+                            label: "New",
+                            data: <?php echo $record['visitor'][1][1] ?>,
+                            color: "#1ab394",
+                        }];
 
-                    ];
+                        var plotObj = $.plot($("#flot-pie-chart<?php echo $i ?>"), data, {
+                            series: {
+                                pie: {
+                                    show: true
+                                }
+                            },
+                            grid: {
+                                hoverable: true
+                            },
+                            tooltip: true,
+                            tooltipOpts: {
+                                content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                                shifts: {
+                                    x: 20,
+                                    y: 0
+                                },
+                                defaultTheme: false
+                            }
+                        });
 
-                    var doughnutOptions = {
-                        segmentShowStroke: true,
-                        segmentStrokeColor: "#fff",
-                        segmentStrokeWidth: 2,
-                        percentageInnerCutout: 45, // This is 0 for Pie charts
-                        animationSteps: 100,
-                        animationEasing: "easeOutBounce",
-                        animateRotate: true,
-                        animateScale: false,
-                    };
-
-                    var ctx = document.getElementById("doughnutVisitors<?php echo $i ?>").getContext("2d");
-                    var DoughnutChart = new Chart(ctx).Doughnut(doughnutData, doughnutOptions);
-
-                    var doughnutData1 = [
-                        /*            {
-                         value: 7,
-                         color: "#AF86EE",
-                         highlight: "#1ab394",
-                         label: "(not set)"
-                         },*/
-                        {
-                            value:<?php echo (isset($record['deviceBreak'][1][1])?$record['deviceBreak'][1][1]:0)  ?>,
-                            color: "#FD2149",
-                            highlight: "#1ab394",
-                            label: "Android"
-                        },
-                        {
-                            value:<?php echo (isset($record['deviceBreak'][4][1])?$record['deviceBreak'][4][1]:0)  ?>,
-                            color: "#F65452",
-                            highlight: "#1ab394",
-                            label: "Mac"
-                        },  {
-                            value:<?php echo (isset($record['deviceBreak'][5][1])?$record['deviceBreak'][5][1]:0)  ?>,
-                            color: "#2958E8",
-                            highlight: "#1ab394",
-                            label: "Win"
-                        },  {
-                            value: <?php echo (isset($record['deviceBreak'][6][1])?$record['deviceBreak'][6][1]:0)  ?>,
-                            color: "#D10F0F",
-                            highlight: "#1ab394",
-                            label: "Win Phone"
-                        },  {
-                            value: <?php echo (isset($record['deviceBreak'][7][1])?$record['deviceBreak'][7][1]:0)  ?>,
-                            color: "#9D948D",
-                            highlight: "#1ab394",
-                            label: "iOS"
-                        },
-
-                    ];
-
-                    var doughnutOptions1 = {
-                        segmentShowStroke: true,
-                        segmentStrokeColor: "#fff",
-                        segmentStrokeWidth: 2,
-                        percentageInnerCutout: 45, // This is 0 for Pie charts
-                        animationSteps: 100,
-                        animationEasing: "easeOutBounce",
-                        animateRotate: true,
-                        animateScale: false,
-                    };
-
-                    var ctx = document.getElementById("doughnutDevices<?php echo $i ?>").getContext("2d");
-                    var DoughnutChart = new Chart(ctx).Doughnut(doughnutData1, doughnutOptions1);
-
-
+                    });
 
                 });
             </script>
 
-        <?php }}
+        <?php }
+    }
 
-    if(isset($fb['sub']) && $fb['sub']=="FB"){
+    if (isset($fb['sub']) && $fb['sub'] == "FB") {
 
-        $x=0;
+        $x = 0;
 
         foreach ($fb['fbDashboardRecords'] as $item) { ?>
 
 
             <script>
-                $(document).ready(function() {
+                $(document).ready(function () {
 
                     var lineData = {
                         labels: <?php echo $item['valueRange'] ?>,
@@ -268,7 +224,7 @@
                                 fillColor: "rgba(70,79,136,0.5)",
                                 strokeColor: "rgba(70,79,136,1)",
                                 pointColor: "rgba(70,79,136,1)",
-                                title:"Completed Order",
+                                title: "Completed Order",
                                 pointStrokeColor: "#fff",
                                 pointHighlightFill: "#fff",
                                 pointHighlightStroke: "rgba(220,220,220,1)",
@@ -279,7 +235,7 @@
                                 fillColor: "rgba(26,179,148,0.5)",
                                 strokeColor: "rgba(26,179,148,0.7)",
                                 pointColor: "rgba(26,179,148,1)",
-                                title:"Completed Order",
+                                title: "Completed Order",
                                 pointStrokeColor: "#fff",
                                 pointHighlightFill: "#fff",
                                 pointHighlightStroke: "rgba(26,179,148,1)",
@@ -313,67 +269,159 @@
             </script>
 
 
-            <?php $x++;  } }
+            <?php $x++;
+        }
+    }
 
 
-
-} elseif ($page == "Details"){ ?>
+} elseif ($page == "Details") { ?>
 
     <script>
+        //Flot Multiple Axes Line Chart
+        $(function () {
+            var oilprices =<?php echo $numUser ?>;
+            var exchangerates = <?php echo $numPageViews ?>;
 
-        $(document).ready(function() {
+            function euroFormatter(v, axis) {
+                return v.toFixed(axis.tickDecimals) + "€";
+            }
 
-            var lineData = {
-                labels:  <?php echo $valueRange ?>,
-                datasets: [
-                    {
-                        label: "Example dataset",
-                        fillColor: "rgba(220,220,220,0.5)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        pointColor: "rgba(220,220,220,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: <?php echo $numUser ?>
+            function doPlot(position) {
+                $.plot($("#flot-line-chart-multi"), [{
+                    data: oilprices,
+                    label: "Number of users"
+                }, {
+                    data: exchangerates,
+                    label: "Number of page views"
+                }], {
+                    xaxes: [{
+                        mode: 'time'
+                    }],
+                    legend: {
+                        position: 'sw'
                     },
-                    {
-                        label: "Example dataset",
-                        fillColor: "rgba(26,179,148,0.5)",
-                        strokeColor: "rgba(26,179,148,0.7)",
-                        pointColor: "rgba(26,179,148,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(26,179,148,1)",
-                        data:<?php echo $numPageViews ?>
+                    colors: ["##1c84c6", "#1ab394"],
+                    grid: {
+                        color: "#999999",
+                        hoverable: true,
+                        clickable: true,
+                        tickColor: "#D4D4D4",
+                        borderWidth: 0,
+                        hoverable: true //IMPORTANT! this is needed for tooltip to work,
+
+                    },
+                    tooltip: true,
+                    tooltipOpts: {
+                        content: "%s for %x was %y",
+                        xDateFormat: "%y-%0m-%0d",
+
+                        onHover: function (flotItem, $tooltipEl) {
+                            // console.log(flotItem, $tooltipEl);
+                        }
                     }
-                ]
-            };
 
-            var lineOptions = {
-                scaleShowGridLines: true,
-                scaleGridLineColor: "rgba(0,0,0,.05)",
-                scaleGridLineWidth: 1,
-                bezierCurve: true,
-                bezierCurveTension: 0.4,
-                pointDot: true,
-                pointDotRadius: 4,
-                pointDotStrokeWidth: 1,
-                pointHitDetectionRadius: 20,
-                datasetStroke: true,
-                datasetStrokeWidth: 2,
-                datasetFill: true,
-                responsive: true,
-            };
+                });
+            }
 
+            doPlot("right");
 
-            var ctx = document.getElementById("lineChart").getContext("2d");
-            var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
+            $("button").click(function () {
+                doPlot($(this).text());
+            });
+        });
+
+        $(document).ready(function () {
+
+            //Flot Pie Chart
+            $(function () {
+
+                var data = [{
+                    label: "Returning",
+                    data: <?php echo $visitor[0][1] ?>,
+                    color: "#d3d3d3",
+                }, {
+                    label: "New",
+                    data: <?php echo $visitor[1][1] ?>,
+                    color: "#1ab394",
+                }];
+
+                var plotObj = $.plot($("#flot-pie-chart-visitors"), data, {
+                    series: {
+                        pie: {
+                            show: true
+                        }
+                    },
+                    grid: {
+                        hoverable: true
+                    },
+                    tooltip: true,
+                    tooltipOpts: {
+                        content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                        shifts: {
+                            x: 20,
+                            y: 0
+                        },
+                        defaultTheme: false
+                    }
+                });
+
+            });
+
+//Flot Pie Chart
+            $(function () {
+
+                var data = [
+                    {
+                        label: "Android",
+                        data: <?php echo (isset($deviceBreak[1][1])?$deviceBreak[1][1]:0)  ?>,
+                        color: "#FD2149",
+                    }, {
+                        label: "Mac",
+                        data: <?php echo (isset($deviceBreak[4][1])?$deviceBreak[4][1]:0)  ?>,
+                        color: "#F65452",
+                    }, {
+                        label: "Mac",
+                        data: <?php echo (isset($deviceBreak[5][1])?$deviceBreak[5][1]:0)  ?>,
+                        color: "#2958E8",
+                    }, {
+                        label: "Win",
+                        data: <?php echo (isset($deviceBreak[6][1])?$deviceBreak[6][1]:0)  ?>,
+                        color: "#1ab394",
+                    }, {
+                        label: "iOS",
+                        data: <?php echo (isset($deviceBreak[7][1])?$deviceBreak[7][1]:0)  ?>,
+                        color: "#D10F0F",
+                    }];
+
+                var plotObj = $.plot($("#flot-pie-chart-device"), data, {
+                    series: {
+                        pie: {
+                            show: true
+                        }
+                    },
+                    grid: {
+                        hoverable: true
+                    },
+                    tooltip: true,
+                    tooltipOpts: {
+                        content: "%p.0%, %s", // show percentages, rounding to 2 decimal places
+                        shifts: {
+                            x: 20,
+                            y: 0
+                        },
+                        defaultTheme: false
+                    }
+                });
+
+            });
+
 
         });
 
     </script>
 
-<?php } elseif ($page == "getId"){ ?>
+
+<?php } elseif ($page == "getId") { ?>
 
     <script>
 
@@ -386,7 +434,7 @@
 
                 var sel = $("#property");
                 sel.empty();
-                for (var i=0; i<data.length; i++) {
+                for (var i = 0; i < data.length; i++) {
                     sel.append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
                 }
 
@@ -395,12 +443,10 @@
         });
 
 
-
-
         var profile = 0
 
-        $('#profile').on('change', function() {
-            profile = this.value ; // or $(this).val()
+        $('#profile').on('change', function () {
+            profile = this.value; // or $(this).val()
 
             $.ajax({
                 type: "POST",
@@ -411,7 +457,7 @@
 
                     var sel = $("#property");
                     sel.empty();
-                    for (var i=0; i<data.length; i++) {
+                    for (var i = 0; i < data.length; i++) {
                         sel.append('<option value="' + data[i].id + '">' + data[i].name + '</option>');
                     }
 
@@ -421,7 +467,7 @@
 
         });
 
-        $('#property').on('change', function() {
+        $('#property').on('change', function () {
             property1 = $(this).find("option:selected").text();
 
             //alert(property1);
@@ -432,11 +478,11 @@
 
     </script>
 
-<?php } elseif ($page == "Facebook"){ ?>
+<?php } elseif ($page == "Facebook") { ?>
 
     <script>
 
-        $(document).ready(function() {
+        $(document).ready(function () {
 
             var lineData = {
                 labels:  <?php echo $valueRange ?>,
@@ -488,7 +534,7 @@
 
     </script>
 
-<?php } elseif ($page == "Vision6"){ ?>
+<?php } elseif ($page == "Vision6") { ?>
 
     <!-- Data Tables -->
     <script src="<?php echo base_url() ?>/assets/js/plugins/dataTables/jquery.dataTables.js"></script>
@@ -507,16 +553,16 @@
     </script>
 
     <script>
-        $('input[name=optionsRadios]').change(function(){
+        $('input[name=optionsRadios]').change(function () {
             $('form').submit();
 
         });
     </script>
 
-<?php } elseif ($page == "Campaign"){ ?>
+<?php } elseif ($page == "Campaign") { ?>
 
     <script>
-        $(document).ready(function() {
+        $(document).ready(function () {
 
 
             var doughnutData = [
@@ -532,7 +578,7 @@
                     color: "#F65452",
                     highlight: "#1ab394",
                     label: "Mobile"
-                },  {
+                }, {
                     value:<?php echo $stats['device_statistics']['mobile']['total_count'] ?>,
                     color: "#2958E8",
                     highlight: "#1ab394",
@@ -597,71 +643,66 @@
             var DoughnutChart = new Chart(ctx).Doughnut(doughnutData1, doughnutOptions1);
 
 
-
         });
     </script>
 
-<?php } elseif ($page == "MailChimp"){ ?>
+<?php } elseif ($page == "MailChimp") { ?>
 
 
-
-
-<?php } elseif ($page == "Xero"){ ?>
+<?php } elseif ($page == "Xero") { ?>
 
     <script>
 
-        var sales_count=1;
+        var sales_count = 1;
         var sales_limit = <?php echo count($sales) ?>;
 
-        if(sales_limit>10){
-            sales_limit=10;
+        if (sales_limit > 10) {
+            sales_limit = 10;
         }
 
-        function addMore(){
+        function addMore() {
 
-            sales_id =  $( "#sales_id" ).val();
+            sales_id = $("#sales_id").val();
 
-            if(sales_id!=0){
-                if(sales_count<sales_limit ){
-                    $( "#sales" ).clone(true).appendTo( "#sales_list" );
+            if (sales_id != 0) {
+                if (sales_count < sales_limit) {
+                    $("#sales").clone(true).appendTo("#sales_list");
                     sales_count++;
 
-                }else{
+                } else {
                     alert("Only 10 Accounts can be added");
                 }
             }
 
         }
 
-        var expense_count=1;
+        var expense_count = 1;
         var expense_limit = <?php echo count($expense) ?>;
 
-        if(expense_limit>10){
-            expense_limit=10;
+        if (expense_limit > 10) {
+            expense_limit = 10;
         }
 
 
-        function addExpensesMore(){
+        function addExpensesMore() {
 
-            expenses_id =  $( "#expenses_id" ).val();
+            expenses_id = $("#expenses_id").val();
 
-            if(expenses_id!=0){
-                if(expense_count<10 ){
-                    $( "#expense" ).clone().appendTo( "#expense_list" );
+            if (expenses_id != 0) {
+                if (expense_count < 10) {
+                    $("#expense").clone().appendTo("#expense_list");
                     expense_count++;
 
-                }else{
+                } else {
                     alert("Only 10 Accounts can be added");
                 }
             }
-
-
 
 
         }
     </script>
 
-<?php } elseif ($page == "Xero_Index"){ ?>
+<?php } elseif ($page == "Xero_Index") { ?>
     <script>
         <?php
 
@@ -707,8 +748,10 @@
 <script>
     Userback = window.Userback || {};
 
-    (function(id) {
-        if (document.getElementById(id)) {return;}
+    (function (id) {
+        if (document.getElementById(id)) {
+            return;
+        }
         var s = document.createElement('script');
         s.id = id;
         s.src = 'http://app.userback.io/widget.js';
@@ -721,60 +764,60 @@
 
 <?php
 
-if(isset($error_response)){
+if (isset($error_response)) {
 
-if( $error_response){ ?>
+    if ($error_response) { ?>
 
-    <script>
+        <script>
 
-        Command: toastr['success']("<?php echo $error_message ?>")
+            Command: toastr['success']("<?php echo $error_message ?>")
 
-        toastr.options = {
-            "closeButton": true,
-            "debug": false,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "onclick": null,
-            "showDuration": "400",
-            "hideDuration": "1000",
-            "timeOut": "7000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
-    </script>
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "onclick": null,
+                "showDuration": "400",
+                "hideDuration": "1000",
+                "timeOut": "7000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        </script>
 
-<?php } else {?>
+    <?php } else { ?>
 
-    <script>
+        <script>
 
-        Command: toastr['error']("<?php echo $error_message ?>")
+            Command: toastr['error']("<?php echo $error_message ?>")
 
-        toastr.options = {
-            "closeButton": true,
-            "debug": false,
-            "progressBar": true,
-            "positionClass": "toast-top-right",
-            "onclick": null,
-            "showDuration": "400",
-            "hideDuration": "1000",
-            "timeOut": "7000",
-            "extendedTimeOut": "1000",
-            "showEasing": "swing",
-            "hideEasing": "linear",
-            "showMethod": "fadeIn",
-            "hideMethod": "fadeOut"
-        }
-    </script>
+            toastr.options = {
+                "closeButton": true,
+                "debug": false,
+                "progressBar": true,
+                "positionClass": "toast-top-right",
+                "onclick": null,
+                "showDuration": "400",
+                "hideDuration": "1000",
+                "timeOut": "7000",
+                "extendedTimeOut": "1000",
+                "showEasing": "swing",
+                "hideEasing": "linear",
+                "showMethod": "fadeIn",
+                "hideMethod": "fadeOut"
+            }
+        </script>
 
-<?php }}?>
+    <?php }
+} ?>
 
 <script>
 
-    function deleteAcc(dlink,dcontent){
-
+    function deleteAcc(dlink, dcontent) {
 
 
         $('#myModal6').modal({

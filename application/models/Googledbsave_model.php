@@ -103,7 +103,7 @@ class Googledbsave_model extends CI_Model
 
     public function getProfile($user_id)
     {
-        $this->db->select('web_id');
+        $this->db->select('web_id,namePro');
         $this->db->from('google_profile');
         $this->db->where('user_id', $user_id);
         $this->db->where('status', 1);
@@ -128,6 +128,15 @@ class Googledbsave_model extends CI_Model
         $this->db->where('user_id', $user_id);
         $this->db->delete('google_profile');
 
+
+    }
+
+    public function getProfileData($profileId,$user_id)
+    {
+        $this->db->from('google_profile');
+        $this->db->where('web_id', $profileId);
+        $this->db->where('user_id', $user_id);
+        return $this->db->get()->row();
 
     }
 

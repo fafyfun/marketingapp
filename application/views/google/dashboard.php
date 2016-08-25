@@ -1,8 +1,17 @@
-<?php
 
+<div class="row">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-content">
+                <div class="col-lg-11">
+        <h2><i class="fa fa-google"></i> Google Analytics</h2>
+                </div>
+                </div>
+            </div>
 
-
-if (!empty($google['resultData'])) { ?>
+    </div>
+</div>
+<?php if (!empty($google['resultData'])) { ?>
 
     <div class="row">
         <div class="col-lg-12">
@@ -17,11 +26,11 @@ if (!empty($google['resultData'])) { ?>
                         <label class="font-noraml">Date Range</label>
 
                         <div class="input-daterange input-group" id="datepicker">
-                            <input type="text" id="from" class="input-sm form-control" name="start">
+                            <input type="text" id="from" class="input-sm form-control" name="start" value="<?php echo $showStart ?>">
                             <span class="input-group-addon">to</span>
-                            <input type="text" id="to" class="input-sm form-control" name="end">
+                            <input type="text" id="to" class="input-sm form-control" name="end" value="<?php echo $showEnd ?>">
                         </div>
-                        <button class="btn btn-sm btn-white" type="submit">Update</button>
+                        <button class="btn btn-sm btn-primary" type="submit">Update</button>
                     </div>
 
                     </form>
@@ -49,67 +58,72 @@ if (!empty($google['resultData'])) { ?>
                                 <span class="pull-right">
                                     <?php echo $record['totalRecords']['ga:users'] ?>
                                 </span>
-                                        <span class="label label-success"> </span> Users
+                                        Users
                                     </li>
                                     <li class="list-group-item">
                                 <span class="pull-right">
                                    <?php echo $record['totalRecords']['ga:pageviews'] ?>
                                 </span>
-                                        <span class="label label-info"> </span> Page Views
+                                     Page Views
                                     </li>
                                     <li class="list-group-item">
                                 <span class="pull-right">
                                     <?php echo $record['totalRecords']['ga:sessions'] ?>
                                 </span>
-                                        <span class="label"> </span> Sessions
+                                         Sessions
                                     </li>
                                     <li class="list-group-item">
                                 <span class="pull-right">
                                     <?php echo number_format($record['totalRecords']['ga:bounceRate'], 2, '.', ''); ?>%
                                 </span>
-                                        <span class="label"> </span> Bounce Rate
+                                         Bounce Rate
                                     </li>
                                     <li class="list-group-item">
                                 <span class="pull-right">
                                    <?php echo gmdate("H:i:s", $record['totalRecords']['ga:avgSessionDuration']) ?>
                                 </span>
-                                        <span class="label"> </span> Session duration
+                                         Session duration
                                     </li>
                                     <li class="list-group-item">
                                 <span class="pull-right">
                                     <?php echo $record['searchEngine'] ?>
                                 </span>
-                                        <span class="label"> </span> Search Engine Visits
+                                         Search Engine Visits
                                     </li>
                                 </ul>
                             </div>
                             <div class="col-sm-6">
-                                <div class="flot-chart dashboard-chart">
-                                    <canvas id="lineChart<?php echo $i ?>" height="90"></canvas>
+<!--                                <div class="flot-chart dashboard-chart">
+                                    <canvas id="lineChart<?php /*echo $i */?>" height="90"></canvas>
+                                </div>-->
+                                <div class="flot-chart">
+                                    <div class="flot-chart-content" id="flot-line-chart-multi<?php echo $i ?>"></div>
                                 </div>
                             </div>
                             <div class="col-sm-3">
                                 <div class="statistic-box">
 
                                     <div class="row text-center">
-                                        <div class="col-lg-6">
-                                            <canvas id="doughnutVisitors<?php echo $i ?>" width="120"
-                                                    height="120"></canvas>
+
+                                        <div class="flot-chart">
+                                            <?php if(!empty($record['visitor'])){ ?>
+                                            <div class="flot-chart-pie-content" id="flot-pie-chart<?php echo $i ?>"></div>
+                                            <?php }else{
+                                                echo "<div class='flot-chart-pie-content'>No Data Found</div>";
+                                            } ?>
                                             <h5>Visitors</h5>
                                         </div>
-                                        <div class="col-lg-6">
-                                            <canvas id="doughnutDevices<?php echo $i ?>" width="120"
-                                                    height="120"></canvas>
-                                            <h5>Devices</h5>
-                                        </div>
+
                                     </div>
                                 </div>
 
-                                <a href="<?php echo base_url() ?>google/details/<?php echo $record['profile'] ?>">View
-                                    More Details </a>
+
 
                             </div>
                         </div>
+
+                        <a class="btn btn-success btn-facebook" href="<?php echo base_url() ?>google/details/<?php echo $record['profile'] ?>">View
+                            More Details </a>
 
                     </div>
                 </div>
@@ -130,7 +144,8 @@ if (!empty($google['resultData'])) { ?>
         </div>
     </div>
 
-<?php } else {             $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/google/getProfileIDs';
+<?php } else {
+    $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/google/getProfileIDs';
     header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
     exit; ?>
 

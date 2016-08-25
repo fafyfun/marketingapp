@@ -420,6 +420,17 @@ class Xero extends CI_Controller
     }
 
 
+    public function deleteAccount()
+    {
+        $listAdded =  $this->xero_model->deleteAccount($_SESSION['id']);
+
+        $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/xero/set_account_type';
+        header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+        exit;
+
+    }
+
+
 
 
 

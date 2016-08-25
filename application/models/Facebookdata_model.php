@@ -104,7 +104,16 @@ class Facebookdata_model extends CI_Model
         $this->db->where('page_id', $id);
         $this->db->where('user_id', $user_id);
         $this->db->delete('facebook_pages');
+    }
 
+    public function remove_access($user_id)
+    {
+        $this->db->where('user_id', $user_id);
+        $this->db->delete('facebook_pages');
+
+
+        $this->db->where('user_id', $user_id);
+        $this->db->delete('facebook_access');
 
     }
 

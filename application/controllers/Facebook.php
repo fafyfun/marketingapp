@@ -46,6 +46,11 @@ class Facebook extends CI_Controller
 
     public function fbCallback()
     {
+        foreach ($_COOKIE as $k=>$v) {
+            if(strpos($k, "FBRLH_")!==FALSE) {
+                $_SESSION[$k]=$v;
+            }
+        }
 
         $helper = $this->fb->getRedirectLoginHelper();
 
@@ -117,6 +122,16 @@ class Facebook extends CI_Controller
 
             $permissions = ["email,manage_pages,read_insights"]; // Optional permissions
             $loginUrl = $helper->getLoginUrl(base_url().'facebook/fbCallback', $permissions);
+
+            foreach ($_SESSION as $k=>$v) {
+                if(strpos($k, "FBRLH_")!==FALSE) {
+                    if(!setcookie($k, $v)) {
+                        //what??
+                    } else {
+                        $_COOKIE[$k]=$v;
+                    }
+                }
+            }
 
 
             $data = array(
@@ -505,6 +520,20 @@ class Facebook extends CI_Controller
         $this->load->view('facebook/moreDetails', $data);
         $this->load->view('footer', $data);
 
+    }
+
+    public function removeApp()
+    {
+        $codeSet =$this->facebookdata_model->getFBAccessCode($_SESSION['id']);
+
+        $ret = $this->fb->delete('/me/permissions',array(),$codeSet->accessToken);
+
+
+        $this->facebookdata_model->remove_access($_SESSION['id']);
+
+        $redirect_uri = 'http://' . $_SERVER['HTTP_HOST'] . '/facebook/selectProfile';
+        header('Location: ' . filter_var($redirect_uri, FILTER_SANITIZE_URL));
+        exit;
     }
 
 

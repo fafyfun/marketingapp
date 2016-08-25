@@ -23,11 +23,7 @@
 
             <div class="ibox float-e-margins">
                 <div class="ibox-title">
-                    <h5>All form elements
-                        <small>With custom checbox and radion elements.</small>
-                    </h5>
-
-                </div>
+                 </div>
                 <div class="ibox-content">
                     <a class="btn btn-success btn-facebook" href="<?php echo $link ?>">
                         <i class="fa fa-facebook"> </i> Sign in with Facebook
@@ -82,8 +78,6 @@
             </div>
         </div>
 
-        <?php } ?>
-
     </div>
 
     <div class="row">
@@ -132,5 +126,21 @@
             </div>
         </div>
     </div>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="ibox float-e-margins">
+                <div class="ibox-title">
+                </div>
+                <div class="ibox-content">
+                    <a class="btn btn-success btn-facebook" onclick="deleteAcc('<?php echo base_url()?>facebook/removeApp','') " >
+                        <i class="fa fa-facebook"> </i> Remove App
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <?php } ?>
 
 </div>
