@@ -62,6 +62,16 @@ class Twitter extends CI_Controller
             'selectAccount'=> $getTwitterAccount
         );
 
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-twitter',
+            'head_url'=>'/twitter/dashboard',
+            'title'=> 'Twitter',
+            'sub'=>'Add New Twitter Account',
+            'date'=> 0
+        );
+
+
         $this->load->view('header',$data);
         $this->load->view('twitter/authProfile');
         $this->load->view('footer');
@@ -148,6 +158,15 @@ class Twitter extends CI_Controller
                 'twitterRecord'=>$twitterRecord,
                 'sub'=> 'twitter'
             )
+        );
+
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-twitter',
+            'head_url'=>'',
+            'title'=> 'Twitter',
+            'sub'=>'',
+            'date'=> 0
         );
 
 

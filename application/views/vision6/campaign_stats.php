@@ -7,10 +7,6 @@
  */
 ?>
 
-
-<div class="row">
-       <h2>Campaign Id: <?php echo $id ?></h2>
-</div>
 <div class="row">
     <div class="col-lg-3">
         <div class="ibox float-e-margins">

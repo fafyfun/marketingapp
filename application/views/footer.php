@@ -214,58 +214,59 @@
 
 
             <script>
-                $(document).ready(function () {
 
-                    var lineData = {
-                        labels: <?php echo $item['valueRange'] ?>,
-                        datasets: [
-                            {
-                                label: "Test",
-                                fillColor: "rgba(70,79,136,0.5)",
-                                strokeColor: "rgba(70,79,136,1)",
-                                pointColor: "rgba(70,79,136,1)",
-                                title: "Completed Order",
-                                pointStrokeColor: "#fff",
-                                pointHighlightFill: "#fff",
-                                pointHighlightStroke: "rgba(220,220,220,1)",
-                                data: <?php echo $item['like'] ?>
+                $(function () {
+                    var oilprices =<?php echo $item['like'] ?>;
+                    var exchangerates = <?php echo $item['reach'] ?>;
+
+                    function euroFormatter(v, axis) {
+                        return v.toFixed(axis.tickDecimals) + "€";
+                    }
+
+                    function doPlot(position) {
+                        $.plot($("#lineChartfb<?php echo $x ?>"), [{
+                            data: oilprices,
+                            label: "Number of likes"
+                        }, {
+                            data: exchangerates,
+                            label: "Number of page reach"
+                        }], {
+                            xaxes: [{
+                                mode: 'time'
+                            }],
+                            legend: {
+                                position: 'sw'
                             },
-                            {
-                                label: "Example dataset",
-                                fillColor: "rgba(26,179,148,0.5)",
-                                strokeColor: "rgba(26,179,148,0.7)",
-                                pointColor: "rgba(26,179,148,1)",
-                                title: "Completed Order",
-                                pointStrokeColor: "#fff",
-                                pointHighlightFill: "#fff",
-                                pointHighlightStroke: "rgba(26,179,148,1)",
-                                data: <?php echo $item['reach'] ?>
+                            colors: ["##1c84c6", "#1ab394"],
+                            grid: {
+                                color: "#999999",
+                                hoverable: true,
+                                clickable: true,
+                                tickColor: "#D4D4D4",
+                                borderWidth: 0,
+                                hoverable: true //IMPORTANT! this is needed for tooltip to work,
+
+                            },
+                            tooltip: true,
+                            tooltipOpts: {
+                                content: "%s for %x was %y",
+                                xDateFormat: "%y-%0m-%0d",
+
+                                onHover: function (flotItem, $tooltipEl) {
+                                    // console.log(flotItem, $tooltipEl);
+                                }
                             }
-                        ]
-                    };
 
-                    var lineOptions = {
-                        scaleShowGridLines: true,
-                        showLegend: true,
-                        scaleGridLineColor: "rgba(0,0,0,.05)",
-                        scaleGridLineWidth: 1,
-                        bezierCurve: true,
-                        bezierCurveTension: 0.4,
-                        pointDot: true,
-                        pointDotRadius: 4,
-                        pointDotStrokeWidth: 1,
-                        pointHitDetectionRadius: 20,
-                        datasetStroke: true,
-                        datasetStrokeWidth: 2,
-                        datasetFill: true,
-                        responsive: true,
-                    };
+                        });
+                    }
 
+                    doPlot("right");
 
-                    var ctx = document.getElementById("lineChartfb<?php echo $x ?>").getContext("2d");
-                    var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
-
+                    $("button").click(function () {
+                        doPlot($(this).text());
+                    });
                 });
+
             </script>
 
 
@@ -482,55 +483,58 @@
 
     <script>
 
-        $(document).ready(function () {
+        $(function () {
+            var oilprices =<?php echo $like ?>;
+            var exchangerates = <?php echo $reach ?>;
 
-            var lineData = {
-                labels:  <?php echo $valueRange ?>,
-                datasets: [
-                    {
-                        label: "Example dataset",
-                        fillColor: "rgba(220,220,220,0.5)",
-                        strokeColor: "rgba(220,220,220,1)",
-                        pointColor: "rgba(220,220,220,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(220,220,220,1)",
-                        data: <?php echo $like ?>
+            function euroFormatter(v, axis) {
+                return v.toFixed(axis.tickDecimals) + "€";
+            }
+
+            function doPlot(position) {
+                $.plot($("#lineChart"), [{
+                    data: oilprices,
+                    label: "Number of likes"
+                }, {
+                    data: exchangerates,
+                    label: "Number of page reach"
+                }], {
+                    xaxes: [{
+                        mode: 'time'
+                    }],
+                    legend: {
+                        position: 'sw'
                     },
-                    {
-                        label: "Example dataset",
-                        fillColor: "rgba(26,179,148,0.5)",
-                        strokeColor: "rgba(26,179,148,0.7)",
-                        pointColor: "rgba(26,179,148,1)",
-                        pointStrokeColor: "#fff",
-                        pointHighlightFill: "#fff",
-                        pointHighlightStroke: "rgba(26,179,148,1)",
-                        data:<?php echo $reach ?>
+                    colors: ["##1c84c6", "#1ab394"],
+                    grid: {
+                        color: "#999999",
+                        hoverable: true,
+                        clickable: true,
+                        tickColor: "#D4D4D4",
+                        borderWidth: 0,
+                        hoverable: true //IMPORTANT! this is needed for tooltip to work,
+
+                    },
+                    tooltip: true,
+                    tooltipOpts: {
+                        content: "%s for %x was %y",
+                        xDateFormat: "%y-%0m-%0d",
+
+                        onHover: function (flotItem, $tooltipEl) {
+                            // console.log(flotItem, $tooltipEl);
+                        }
                     }
-                ]
-            };
 
-            var lineOptions = {
-                scaleShowGridLines: true,
-                scaleGridLineColor: "rgba(0,0,0,.05)",
-                scaleGridLineWidth: 1,
-                bezierCurve: true,
-                bezierCurveTension: 0.4,
-                pointDot: true,
-                pointDotRadius: 4,
-                pointDotStrokeWidth: 1,
-                pointHitDetectionRadius: 20,
-                datasetStroke: true,
-                datasetStrokeWidth: 2,
-                datasetFill: true,
-                responsive: true,
-            };
+                });
+            }
 
+            doPlot("right");
 
-            var ctx = document.getElementById("lineChart").getContext("2d");
-            var myNewChart = new Chart(ctx).Line(lineData, lineOptions);
-
+            $("button").click(function () {
+                doPlot($(this).text());
+            });
         });
+
 
     </script>
 
@@ -548,7 +552,11 @@
             "dom": 'T<"clear">lfrtip',
             "tableTools": {
                 "sSwfPath": "<?php echo base_url() ?>/assets/js/plugins/dataTables/swf/copy_csv_xls_pdf.swf"
-            }
+            },
+            columnDefs : [
+
+            ],
+            order: [[ 2, "desc" ]]
         });
     </script>
 
@@ -602,12 +610,7 @@
             var DoughnutChart = new Chart(ctx).Doughnut(doughnutData, doughnutOptions);
 
             var doughnutData1 = [
-                /*            {
-                 value: 7,
-                 color: "#AF86EE",
-                 highlight: "#1ab394",
-                 label: "(not set)"
-                 },*/
+
 
                 <?php
 

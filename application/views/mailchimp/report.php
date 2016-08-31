@@ -1,7 +1,4 @@
 <div class="row">
-    <h2><?php echo $list['settings']['title'] ?></h2>
-</div>
-<div class="row">
 
     <div class="row">
         <div class="col-lg-4">

@@ -151,6 +151,16 @@ class Google extends CI_Controller
             );
         }
 
+
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-google',
+            'head_url'=>'',
+            'title'=> 'Google Analytics',
+            'sub'=>'',
+            'date'=> 1
+        );
+
         $this->load->view('header', $data);
         $this->load->view('google/dashboard');
         $this->load->view('footer');
@@ -324,6 +334,17 @@ class Google extends CI_Controller
         } else {
             $data['selectProfile'] = NULL;
         }
+
+
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-google',
+            'head_url'=>'/google',
+            'title'=> 'Google Analytics',
+            'sub'=>'Add Property',
+            'date'=> 0
+        );
+
 
 
         $this->load->view('header', $data);
@@ -621,6 +642,7 @@ class Google extends CI_Controller
             $originalEndDate = $this->input->post('end');
             $end = date("Y-m-d", strtotime($originalEndDate));
 
+
             $showStart = $this->input->post('start');
             $showEnd = $this->input->post('end');
 
@@ -783,6 +805,16 @@ class Google extends CI_Controller
             'showEnd' => $showEnd,
             'flag'=>$flag,
         );
+
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-google',
+            'head_url'=>'/google',
+            'title'=> 'Google Analytics',
+            'sub'=>$profileName,
+            'date'=> 1
+        );
+
 
         $this->load->view('header', $data);
         $this->load->view('google/details');

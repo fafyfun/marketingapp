@@ -207,10 +207,19 @@ class Facebook extends CI_Controller
 
         $data['facebookPages'] =   $this->facebookdata_model->getfacebookpagelist($_SESSION['id']);
 
+        $data['breadcrumb'] = array(
 
-        $this->load->view('header');
-        $this->load->view('facebook/selectprofile',$data);
-        $this->load->view('footer',$data);
+            'icon'=> 'fa-facebook',
+            'head_url'=>'/facebook/dashboard',
+            'title'=> 'Facebook Analytics',
+            'sub'=>'Add Page',
+            'date'=> 0
+        );
+
+
+        $this->load->view('header',$data);
+        $this->load->view('facebook/selectprofile');
+        $this->load->view('footer');
     }
 
     public function dashboard()
@@ -224,10 +233,17 @@ class Facebook extends CI_Controller
             $start=date('Y-m-d', strtotime('-30 days'));;
             $end= date('Y-m-d');
 
+            $showStart = date('d-m-Y', strtotime('-30 days'));
+            $showEnd = date('d-m-Y');
+
         } else {
 
             $start = $this->input->post('start');
             $end = $this->input->post('end');
+
+
+            $showStart = $this->input->post('start');
+            $showEnd = $this->input->post('end');
         }
 
 
@@ -282,7 +298,11 @@ class Facebook extends CI_Controller
 
             foreach ($reachlist['data'][0]['values'] as $row){
 
-                $reachTableList[] =$row['value'];
+                $dateMonth = new DateTime($row['end_time']);
+                $dateDimeStamp= $dateMonth->getTimestamp();
+
+                $reachTableList[] =array($dateDimeStamp*1000,$row['value']);
+
                 $totalReach = $totalReach+$row['value'];
 
             }
@@ -290,10 +310,10 @@ class Facebook extends CI_Controller
             foreach ($likelist['data'][0]['values'] as $row){
 
                 $dateMonth = new DateTime($row['end_time']);
+                $dateDimeStamp= $dateMonth->getTimestamp();
 
 
-                $likeTableList[] =$row['value'];
-                $dateRange[]=$dateMonth->format('m/d');
+                $likeTableList[] =array($dateDimeStamp*1000,$row['value']);
 
             }
 
@@ -314,11 +334,12 @@ class Facebook extends CI_Controller
                 'profileId'=>$item->page_id,
                 'totalReach'=>$totalReach,
                 'totalLike'=>$totalLikes,
-                'valueRange'=>json_encode($dateRange),
+                //'valueRange'=>json_encode($dateRange),
                 'like'=>json_encode($likeTableList),
                 'reach'=>json_encode($reachTableList),
                 'page_engaged_users' => $page_engaged_users,
                 'page_views_total' => $page_views_total,
+
 
             );
 
@@ -336,12 +357,22 @@ class Facebook extends CI_Controller
 
             'controller'=>'Facebook',
             'page'=>'Dashboard',
+            'showStart' => $showStart,
+            'showEnd' => $showEnd,
             'fb'=> array(
                 'fbDashboardRecords'=>$fbDashboardRecords,
                 'sub'=> 'FB'
             )
         );
 
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-facebook',
+            'head_url'=>'',
+            'title'=> 'Facebook Analytics',
+            'sub'=>'',
+            'date'=> 1
+        );
 
 
         $this->load->view('header',$data);
@@ -367,10 +398,17 @@ class Facebook extends CI_Controller
             $start=date('Y-m-d', strtotime('-30 days'));;
             $end= date('Y-m-d');
 
+
+            $showStart = date('d-m-Y', strtotime('-30 days'));
+            $showEnd = date('d-m-Y');
+
         } else {
 
             $start = $this->input->post('start');
             $end = $this->input->post('end');
+
+            $showStart = $this->input->post('start');
+            $showEnd = $this->input->post('end');
         }
 
 
@@ -425,7 +463,11 @@ class Facebook extends CI_Controller
 
         foreach ($reachlist['data'][0]['values'] as $row){
 
-            $reachTableList[] =$row['value'];
+            $dateMonth = new DateTime($row['end_time']);
+            $dateDimeStamp= $dateMonth->getTimestamp();
+
+            $reachTableList[] =array($dateDimeStamp*1000,$row['value']);
+
             $totalReach = $totalReach+$row['value'];
 
         }
@@ -433,12 +475,12 @@ class Facebook extends CI_Controller
         foreach ($likelist['data'][0]['values'] as $row){
 
             $dateMonth = new DateTime($row['end_time']);
+            $dateDimeStamp= $dateMonth->getTimestamp();
 
 
-            $likeTableList[] =$row['value'];
-            $dateRange[]=$dateMonth->format('m/d');
-
+            $likeTableList[] =array($dateDimeStamp*1000,$row['value']);
         }
+
 
         foreach ($fbDashReport['data'][0]['values'] as $row){
 
@@ -508,17 +550,28 @@ class Facebook extends CI_Controller
             'totalReach'=>$totalReach,
             'totalLike'=>$totalLikes,
             'postList'=>array_reverse($postArray),
-            'valueRange'=>json_encode($dateRange),
+            //'valueRange'=>json_encode($dateRange),
             'like'=>json_encode($likeTableList),
             'reach'=>json_encode($reachTableList),
             'page_engaged_users' => $page_engaged_users,
             'page_views_total' => $page_views_total,
-            'resultData' => $reachTableList
+            'resultData' => $reachTableList,
+            'showStart' => $showStart,
+            'showEnd' => $showEnd,
         );
 
-        $this->load->view('header');
-        $this->load->view('facebook/moreDetails', $data);
-        $this->load->view('footer', $data);
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-facebook',
+            'head_url'=>'/facebook/dashboard',
+            'title'=> 'Facebook Analytics',
+            'sub'=>$pageDetailsDB->page_name,
+            'date'=> 1
+        );
+
+        $this->load->view('header', $data);
+        $this->load->view('facebook/moreDetails');
+        $this->load->view('footer');
 
     }
 

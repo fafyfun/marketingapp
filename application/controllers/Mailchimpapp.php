@@ -69,9 +69,19 @@ class Mailchimpapp extends CI_Controller
         $data['list']= $listAdded;
         $data['page']= 'MailChimp';
 
-        $this->load->view('header');
-        $this->load->view('mailchimp/save',$data);
-        $this->load->view('footer',$data);
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-envelope-o',
+            'head_url'=>'mailchimpapp/campaign_list',
+            'title'=> 'MailChimp',
+            'sub'=>'Set MailChimp Account',
+            'date'=> 0
+        );
+
+
+        $this->load->view('header',$data);
+        $this->load->view('mailchimp/save');
+        $this->load->view('footer');
 
 
     }
@@ -90,6 +100,16 @@ class Mailchimpapp extends CI_Controller
            'list'=> $result['campaigns'],
             'page'=> 'MailChimp'
         );
+
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-envelope-o',
+            'head_url'=>'',
+            'title'=> 'MailChimp',
+            'sub'=>'',
+            'date'=> 0
+        );
+
 
 
         $this->load->view('header',$data);
@@ -115,6 +135,15 @@ class Mailchimpapp extends CI_Controller
             'list'=> $result,
             'report'=> $report,
             'page'=> 'MailChimp'
+        );
+
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-envelope-o',
+            'head_url'=>'mailchimpapp/campaign_list',
+            'title'=> 'MailChimp',
+            'sub'=>$result['settings']['title'],
+            'date'=> 0
         );
 
 

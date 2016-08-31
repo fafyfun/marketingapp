@@ -42,18 +42,6 @@
                     <?php } ?>
 
                     </tbody>
-                    <tfoot>
-                    <tr>
-                        <th>ID</th>
-                        <th>List ID</th>
-                        <th>Creation Time</th>
-                        <th>Message Type</th>
-                        <th>Send Status</th>
-                        <th>Send Time</th>
-                        <th>Creator Name</th>
-                        <th>Send Contact Count</th>
-                    </tr>
-                    </tfoot>
                 </table>
 
             </div>

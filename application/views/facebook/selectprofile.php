@@ -6,15 +6,6 @@
  * Time: 1:59 PM
  */
 ?>
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-10">
-        <h2>Select Facebook Page</h2>
-    </div>
-    <div class="col-lg-2">
-
-    </div>
-</div>
-<div class="wrapper wrapper-content animated fadeInRight">
 
     <div class="row">
 
@@ -69,8 +60,10 @@
 
                     <div class="form-group">
                         <div class="col-sm-4 col-sm-offset-2">
-                            <button class="btn btn-white" type="submit">Cancel</button>
-                            <button class="btn btn-primary" type="submit">Save changes</button>
+                            <button class="btn btn-primary" type="submit">Add Page</button>
+                            <a class="btn btn-danger btn-facebook" onclick="deleteAcc('<?php echo base_url()?>facebook/removeApp','') " >
+                                <i class="fa fa-facebook"> </i> Remove Facebook Account
+                            </a>
                         </div>
                     </div>
                     </form>
@@ -87,6 +80,8 @@
                     <h5>Added Page List</h5>
                 </div>
                 <div class="ibox-content">
+
+                    <?php if(!empty($facebookPages)){ ?>
 
                     <table class="table">
                         <thead>
@@ -122,25 +117,14 @@
                         </tbody>
                     </table>
 
+                    <?php  } else{ ?>
+                        <div class="text-center" >No Data Found</div>
+                    <?php  } ?>
+
                 </div>
             </div>
         </div>
     </div>
-
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                </div>
-                <div class="ibox-content">
-                    <a class="btn btn-success btn-facebook" onclick="deleteAcc('<?php echo base_url()?>facebook/removeApp','') " >
-                        <i class="fa fa-facebook"> </i> Remove App
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
-
     <?php } ?>
 
-</div>
+

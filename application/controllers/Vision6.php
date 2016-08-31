@@ -46,11 +46,19 @@ class Vision6 extends CI_Controller
             'page'=> 'Vision6'
         );
 
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-envelope-o',
+            'head_url'=>'',
+            'title'=> 'Vision6',
+            'sub'=>'',
+            'date'=> 0
+        );
 
 
-        $this->load->view('header');
-        $this->load->view('vision6/campaign',$data);
-        $this->load->view('footer',$data);
+        $this->load->view('header',$data);
+        $this->load->view('vision6/campaign');
+        $this->load->view('footer');
 
 
 
@@ -68,9 +76,18 @@ class Vision6 extends CI_Controller
             'page'=> 'Campaign'
         );
 
-        $this->load->view('header');
-        $this->load->view('vision6/campaign_stats',$data);
-        $this->load->view('footer',$data);
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-envelope-o',
+            'head_url'=>'/vision6/campaign_list',
+            'title'=> 'Vision6',
+            'sub'=>'Campaign Id: '.$id,
+            'date'=> 0
+        );
+
+        $this->load->view('header',$data);
+        $this->load->view('vision6/campaign_stats');
+        $this->load->view('footer');
 
 
     }
@@ -79,11 +96,11 @@ class Vision6 extends CI_Controller
     {
         $this->form_validation->set_rules('api_key', 'API Key', 'required');
         $this->form_validation->set_rules('list_id', 'List Id', 'required');
-        $this->form_validation->set_rules('list_name', 'List Name', 'required');
-        $this->form_validation->set_rules('folder_name', 'Folder Name', 'required');
+    /*    $this->form_validation->set_rules('list_name', 'List Name', 'required');
+        $this->form_validation->set_rules('folder_name', 'Folder Name', 'required');*/
 
         if ($this->form_validation->run() === false) {
-
+            $data['error'] = validation_errors();
         }else{
             if ($this->input->post()){
 
@@ -141,10 +158,19 @@ class Vision6 extends CI_Controller
         $data['list']= $lists;
         $data['page']= 'Vision6';
 
+        $data['breadcrumb'] = array(
 
-        $this->load->view('header');
-        $this->load->view('vision6/list',$data);
-        $this->load->view('footer',$data);
+            'icon'=> 'fa-envelope-o',
+            'head_url'=>'/vision6/campaign_list',
+            'title'=> 'Vision6',
+            'sub'=>'Add List',
+            'date'=> 0
+        );
+
+
+        $this->load->view('header',$data);
+        $this->load->view('vision6/list');
+        $this->load->view('footer');
 
 
     }
@@ -207,6 +233,44 @@ class Vision6 extends CI_Controller
         $this->load->view('header');
         $this->load->view('vision6/contact',$data);
         $this->load->view('footer',$data);
+
+    }
+
+    public function account_list()
+    {
+        $listAdded =  $this->visionsix_model->getList($_SESSION['id']);
+
+
+        $search_criteria =  array();
+
+        foreach ($listAdded as $item){
+
+            $search_criteria[] =  array('id', 'exactly', $item->list_id);
+            $search_criteria[] =  'OR';
+
+        }
+
+        if(!empty($listAdded)){
+            $lists = $this->api->invokeMethod('searchLists', $search_criteria, 0, 0, 'name', 'ASC');
+        }
+
+
+        $data['list']= $lists;
+        $data['page']= 'Vision6';
+
+        $data['breadcrumb'] = array(
+
+            'icon'=> 'fa-envelope-o',
+            'head_url'=>'/vision6/campaign_list',
+            'title'=> 'Vision6',
+            'sub'=>'List',
+            'date'=> 0
+        );
+
+
+        $this->load->view('header',$data);
+        $this->load->view('vision6/account_list');
+        $this->load->view('footer');
 
     }
 
